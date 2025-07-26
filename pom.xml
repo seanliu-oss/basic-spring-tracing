@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.food-ordering.system</groupId>
-    <artifactId>basic-traceing</artifactId>
+    <artifactId>basic-tracing</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -38,14 +38,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.zipkin.brave</groupId>
-            <artifactId>brave-context-slf4j</artifactId>
         </dependency>
     </dependencies>
 

@@ -33,22 +33,30 @@ public class LoggingControllerTest {
     private BaggageField traceIdField;
 
     @Autowired
+    private BaggageField xTraceIdField;
+
+    @Autowired
     private BaggageField correlationIdField;
 
     @Test
     public void testLoggingEndpoint(CapturedOutput output) {
-        String traceId = "test-trace-id";
+        String traceId = "test-trace-Id";
+        String xTraceId = "6884463f3862b7fa97579ceb2033b14f";
         String correlationId = "test-correlation-id";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(traceIdField.name(), traceId);
         headers.set(correlationIdField.name(), correlationId);
+        headers.set(xTraceIdField.name(), xTraceId);
 
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         ResponseEntity<String> response = this.restTemplate.exchange("http://localhost:" + port + "/test-logging", HttpMethod.GET, entity, String.class);
         assertThat(response.getBody()).isEqualTo("test-logging is called");
 
-        assertThat(output).contains("trace_id: " + traceId, "correlationId: " + correlationId);
+        assertThat(output).containsPattern("traceId: " + xTraceId);
+        assertThat(output).contains("trace_id: " + traceId);
+        assertThat(output).contains("correlationId: " + correlationId);
+        assertThat(output).containsPattern("spanId: [0-9a-f]{16}");
     }
 }

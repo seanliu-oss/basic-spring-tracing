@@ -25,22 +25,17 @@ public class TracingConfig {
     }
 
     @Bean
+    public BaggageField xTraceIdField() {
+        return BaggageField.create("x-b3-traceid");
+    }
+
+    @Bean
     public CurrentTraceContext.ScopeDecorator mdcScopeDecorator() {
-        return MDCScopeDecorator.newBuilder()
-                .add(CorrelationScopeConfig.SingleCorrelationField.newBuilder(traceIdField())
-                        .flushOnUpdate()
-                        .build())
-                .add(CorrelationScopeConfig.SingleCorrelationField.newBuilder(correlationIdField())
-                        .flushOnUpdate()
-                        .build())
-                .build();
+        return MDCScopeDecorator.newBuilder().add(CorrelationScopeConfig.SingleCorrelationField.newBuilder(traceIdField()).flushOnUpdate().build()).add(CorrelationScopeConfig.SingleCorrelationField.newBuilder(correlationIdField()).flushOnUpdate().build()).build();
     }
 
     @Bean
     public Propagation.Factory propagationFactory(BaggageField traceIdField, BaggageField correlationIdField) {
-        return BaggagePropagation.newFactoryBuilder(B3Propagation.FACTORY)
-                .add(BaggagePropagationConfig.SingleBaggageField.remote(traceIdField))
-                .add(BaggagePropagationConfig.SingleBaggageField.remote(correlationIdField))
-                .build();
+        return BaggagePropagation.newFactoryBuilder(B3Propagation.FACTORY).add(BaggagePropagationConfig.SingleBaggageField.remote(traceIdField)).add(BaggagePropagationConfig.SingleBaggageField.remote(correlationIdField)).build();
     }
 }
